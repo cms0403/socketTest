@@ -18,5 +18,8 @@ router.get('/test3', function(req, res, next) {
   res.render('test3', { title: 'test3' });
 });
 
+router.get('/popup', function(req, res, next) {
+  res.render('popup', { title: 'popup' });
+});
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const socket_io = require('socket.io');
 const io = socket_io();
 let dataCheck;
+let createData;
 let socketApi = {};
 let dummyData = [];
 socketApi.io = io;
@@ -26,9 +27,8 @@ createTimeout = () => {
     const timeout = (Math.floor(Math.random() * 6) + 5);
     const randomNum = Math.floor(Math.random() * 10) + 1;
     console.log(`${timeout}초 뒤에 더미데이터 추가`);
-    setTimeout(() => addDummyData(randomNum), timeout * 1000);
+    createData = setTimeout(() => addDummyData(randomNum), timeout * 1000);
 };
-
 //더미데이터 추가 및 노출 로직 실행
 createTimeout();
 
@@ -36,15 +36,6 @@ io.on('connection', (socket) => {
     const req = socket.request; // 웹소켓과는 달리 req객체를 따로 뽑아야함
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log('새로운 클라이언트 접속!', ip, socket.id);
-
-    socket.on('disconnect', () => {
-        console.log('클라이언트 접속 해제', ip, socket.id);
-        clearInterval(socket.interval);
-    });
-
-    socket.on('error', (error) => {
-        console.error(error);
-    });
 
     dataCheck ? clearInterval(dataCheck) : '';
     dataCheck = setInterval(() => {
@@ -58,6 +49,15 @@ io.on('connection', (socket) => {
             socket.emit('dangerData', dummyData[0]);
         }
     }, 1000); // 1초마다 확인
+
+    socket.on('disconnect', () => {
+        console.log('클라이언트 접속 해제', ip, socket.id);
+        clearInterval(socket.interval);
+    });
+
+    socket.on('error', (error) => {
+        console.error(error);
+    });
 
     socket.on("checkComplete", (data) => {
         console.log(data);

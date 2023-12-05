@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>긴급 알림</title>
+    <link rel="stylesheet" href="/styles/popup.css">
+</head>
+  <body>
+    <div id="alert-container">
+      <div id="header">
+        <div><p id="roomNum"></p></div>
+        <div><p id="pNum"></p></div>
+        <div><p id="pName"></p></div>
+      </div>
+
+      <div id="content">
+        <div id="info">
+          <p id="iValue">Additional Info</p>
+        </div>
+        <div id="image">
+          <img src="https://via.placeholder.com/800x500" alt="Emergency Image" />
+        </div>
+        <div id="alerts">
+          <div class="alert">
+            <p>압박감지</p>
+          </div>
+          <div class="alert">
+            <p id="pValue">0</p>
+          </div>
+          <div class="alert">
+            <p>낙상감지</p>
+          </div>
+          <div class="alert">
+            <p id="aValue">0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const jsonString = params.get('jsonString');
+    const randomNum = params.get('randomNum');
+    const fall = params.get('fall');
+    console.log('Received parameters:', jsonString, randomNum, fall);
+
+    document.querySelector("#iValue").innerHTML = jsonString;
+    document.querySelector("#pValue").innerHTML = randomNum;
+    document.querySelector("#aValue").innerHTML = fall;
+});
+</script>
